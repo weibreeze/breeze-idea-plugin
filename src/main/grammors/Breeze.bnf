@@ -1,0 +1,48 @@
+{
+    parserClass="com.weibo.breeze.plugin.psi.BreezeParser"
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+    psiClassPrefix="Breeze"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.weibo.breeze.plugin.psi"
+    psiImplPackage="com.weibo.breeze.plugin.psi.impl"
+
+    elementTypeHolderClass="com.weibo.breeze.plugin.psi.BreezeTypes"
+    elementTypeClass="com.weibo.breeze.plugin.psi.BreezeElementType"
+    tokenTypeClass="com.weibo.breeze.plugin.psi.BreezeTokenType"
+
+    psiImplUtilClass="com.weibo.breeze.plugin.utils.BreezePsiImplUtil"
+    tokens=[
+        // general sign
+        SIGN="SIGN"
+        SIGN_COMMA="SIGN_COMMA"
+        SIGN_SECTION_END = "SIGN_SECTION_END"
+        SIGN_SECTION_START = "SIGN_SECTION_START"
+        SIGN_LINE_END = "SIGN_LINE_END"
+        // 方便捕获字符，用来做关键词提示
+        UNKNOWN_WORD = "UNKNOWN_WORD"
+
+        // keywords
+        OPTION_KEYWORD  = "option"
+        MESSAGE_KEYWORD = "message"
+        PACKAGE_KEYWORD = "package"
+        SERVICE_KEYWORD = "service"
+        ENUM_KEYWORD    = "enum"
+        CONFIG_KEYWORD  = "config"
+    ]
+}
+
+breezeFile ::= item_*
+
+private item_ ::=(package|option|service|method|message|enum|config|COMMENT)
+
+package ::= PACKAGE_KEYWORD VALUE SIGN_LINE_END{methods=[getPackage]}
+innerOption ::= KEY SEPARATOR VALUE {methods=[getKey getValue getPresentation]}
+option ::= OPTION_KEYWORD KEY SEPARATOR VALUE SIGN_LINE_END{methods=[getKey getValue getPresentation]}
+options ::= '(' (innerOption)(SIGN_COMMA innerOption)* ')'
+param ::= TYPE PARAM_NAME {methods=[getType getName]}
+method ::= NAME '(' ((param) (SIGN_COMMA param)*)* ')' TYPE? SIGN_LINE_END{methods=[getReturnType getName getPresentation]}
+service ::= SERVICE_KEYWORD NAME options? SIGN_SECTION_START method* SIGN_SECTION_END {methods=[getName getPresentation]}
+field ::= TYPE? PARAM_NAME SEPARATOR INDEX SIGN_LINE_END {methods=[getType getName getIndex getPresentation]}
+message ::= MESSAGE_KEYWORD NAME options? SIGN_SECTION_START field* SIGN_SECTION_END {methods=[getName getPresentation]}
+enum ::= ENUM_KEYWORD NAME options? SIGN_SECTION_START field* SIGN_SECTION_END {methods=[getName getPresentation]}
+config ::= CONFIG_KEYWORD NAME SIGN_SECTION_START (innerOption SIGN_LINE_END)* SIGN_SECTION_END {methods=[getName getPresentation]}
