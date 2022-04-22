@@ -1,0 +1,73 @@
+<idea-plugin>
+    <id>com.weibo.open.plugin.breeze</id>
+    <name>WeiBreeze</name>
+    <version>1.0</version>
+    <vendor email="zzll0603@126.com" url="https://github.com/rayzhang0603">Ray</vendor>
+
+    <description><![CDATA[
+      WeiBreeze plugin is a plugin for create Breeze(https://github.com/weibreeze/breeze) schema<br>
+      this plugin can generate bean classes and Motan RPC service classes automatically with multi-language such as java, go, php etc. based schema file.<br>
+      it can generate Motan config file also<br>
+    ]]></description>
+
+    <change-notes>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="145.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!--    <depends>com.intellij.modules.lang</depends>-->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="Breeze File" implementationClass="com.weibo.breeze.plugin.language.BreezeFileType"
+                  fieldName="INSTANCE" language="Breeze" extensions="breeze"/>
+        <lang.parserDefinition language="Breeze"
+                               implementationClass="com.weibo.breeze.plugin.psi.BreezeParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Breeze"
+                                       implementationClass="com.weibo.breeze.plugin.highlight.BreezeSyntaxHighlighterFactory"/>
+        <completion.contributor language="Breeze"
+                                implementationClass="com.weibo.breeze.plugin.completion.BreezeCompletionContributor"/>
+        <lang.psiStructureViewFactory language="Breeze"
+                                      implementationClass="com.weibo.breeze.plugin.structure.BreezeStructureViewFactory"/>
+        <lang.formatter language="Breeze"
+                        implementationClass="com.weibo.breeze.plugin.formatter.BreezeFormattingModelBuilder"/>
+        <lang.commenter language="Breeze" implementationClass="com.weibo.breeze.plugin.commenter.BreezeCommenter"/>
+        <applicationService serviceImplementation="com.weibo.breeze.plugin.setting.BreezeSettingState"/>
+        <applicationConfigurable parentId="tools"
+                                 instance="com.weibo.breeze.plugin.setting.BreezeSettingConfigurable"
+                                 id="com.weibo.breeze.plugin.setting.BreezeSettingConfigurable"
+                                 displayName="Breeze Setting"/>
+        <annotator language="Breeze" implementationClass="com.weibo.breeze.plugin.highlight.BreezeAnnotator"/>
+    </extensions>
+
+    <actions>
+        <group id="Breeze.Project" text="Breeze" popup="true" icon="/icons/breeze-16.png">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="before" relative-to-action="AddToFavorites"/>
+        </group>
+        <group id="Breeze.Tools" text="Breeze" popup="true" icon="/icons/breeze-16.png">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </group>
+        <!-- Add your actions here -->
+        <action id="Breeze.GenAction" class="com.weibo.breeze.plugin.actions.BreezeGenAction" text="Generate Code"
+                description="Generate java code from breeze schema">
+            <add-to-group group-id="Breeze.Project" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl meta B"/>
+        </action>
+        <action id="Breeze.GenWithMotanAction" class="com.weibo.breeze.plugin.actions.BreezeGenWithMotanAction"
+                text="Generate with Motan"
+                description="Generate java code and motan RPC config from breeze schema">
+            <add-to-group group-id="Breeze.Project" anchor="after" relative-to-action="Breeze.GenAction"/>
+        </action>
+        <action id="Breeze.Config" class="com.weibo.breeze.plugin.actions.BreezeConfig" text="Config"
+                description="Edit config for breeze">
+            <add-to-group group-id="Breeze.Project" anchor="last"/>
+            <add-to-group group-id="Breeze.Tools" anchor="first"/>
+        </action>
+        <action id="Breeze.Generate" class="com.weibo.breeze.plugin.actions.BreezeMotanConfig" text="Motan Config"
+                description="Generate motan basic config">
+            <add-to-group group-id="GenerateGroup" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
