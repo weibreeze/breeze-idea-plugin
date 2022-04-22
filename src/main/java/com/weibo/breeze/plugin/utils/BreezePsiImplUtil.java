@@ -3,10 +3,10 @@ package com.weibo.breeze.plugin.utils;
 import com.intellij.icons.AllIcons;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.util.NlsSafe;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.weibo.breeze.plugin.psi.*;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -100,8 +100,13 @@ public class BreezePsiImplUtil {
   public static ItemPresentation getPresentation(final BreezeInnerOption element) {
     return new ItemPresentation() {
       @Override
-      public @NlsSafe String getPresentableText() {
+      public String getPresentableText() {
         return element.getKey() + ": \"" + element.getValue() + "\"";
+      }
+
+      @Override
+      public @Nullable String getLocationString() {
+        return null;
       }
 
       @Override
@@ -115,8 +120,13 @@ public class BreezePsiImplUtil {
   public static ItemPresentation getPresentation(final BreezeOption element) {
     return new ItemPresentation() {
       @Override
-      public @NlsSafe String getPresentableText() {
+      public String getPresentableText() {
         return element.getKey() + ": \"" + element.getValue() + "\"";
+      }
+
+      @Override
+      public @Nullable String getLocationString() {
+        return null;
       }
 
       @Override
@@ -130,13 +140,18 @@ public class BreezePsiImplUtil {
   public static ItemPresentation getPresentation(final BreezeField element) {
     return new ItemPresentation() {
       @Override
-      public @NlsSafe String getPresentableText() {
+      public String getPresentableText() {
         String typeString = element.getType();
         if (typeString == null) { // enum field
           return element.getName() + " = " + element.getIndex();
         }
         // message field
         return element.getName() + ": " + element.getType() + " = " + element.getIndex();
+      }
+
+      @Override
+      public @Nullable String getLocationString() {
+        return null;
       }
 
       @Override
@@ -150,7 +165,7 @@ public class BreezePsiImplUtil {
   public static ItemPresentation getPresentation(final BreezeMethod element) {
     return new ItemPresentation() {
       @Override
-      public @NlsSafe String getPresentableText() {
+      public String getPresentableText() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(element.getName()).append("(");
         boolean hasParam = false;
@@ -166,6 +181,11 @@ public class BreezePsiImplUtil {
       }
 
       @Override
+      public @Nullable String getLocationString() {
+        return null;
+      }
+
+      @Override
       public Icon getIcon(boolean unused) {
         return AllIcons.Nodes.Method;
       }
@@ -176,8 +196,13 @@ public class BreezePsiImplUtil {
   public static ItemPresentation getPresentation(final BreezeEnum element) {
     return new ItemPresentation() {
       @Override
-      public @NlsSafe String getPresentableText() {
+      public String getPresentableText() {
         return element.getName();
+      }
+
+      @Override
+      public @Nullable String getLocationString() {
+        return null;
       }
 
       @Override
@@ -191,8 +216,13 @@ public class BreezePsiImplUtil {
   public static ItemPresentation getPresentation(final BreezeMessage element) {
     return new ItemPresentation() {
       @Override
-      public @NlsSafe String getPresentableText() {
+      public String getPresentableText() {
         return element.getName();
+      }
+
+      @Override
+      public @Nullable String getLocationString() {
+        return null;
       }
 
       @Override
@@ -206,8 +236,13 @@ public class BreezePsiImplUtil {
   public static ItemPresentation getPresentation(final BreezeConfig element) {
     return new ItemPresentation() {
       @Override
-      public @NlsSafe String getPresentableText() {
+      public String getPresentableText() {
         return element.getName();
+      }
+
+      @Override
+      public @Nullable String getLocationString() {
+        return null;
       }
 
       @Override
@@ -221,8 +256,13 @@ public class BreezePsiImplUtil {
   public static ItemPresentation getPresentation(final BreezeService element) {
     return new ItemPresentation() {
       @Override
-      public @NlsSafe String getPresentableText() {
+      public String getPresentableText() {
         return element.getName();
+      }
+
+      @Override
+      public @Nullable String getLocationString() {
+        return null;
       }
 
       @Override

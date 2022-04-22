@@ -27,20 +27,25 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.14.0'
+    implementation 'net.minidev:json-smart:2.4.8'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
-// See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = '2021.2.3'
+    version = '2020.2.1'
+    // not patch idea version. use idea-version value of plugin.xml
+    intellij.updateSinceUntilBuild = false
 }
 patchPluginXml {
     changeNotes = """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+      Init version<br>
+      """
 }
 sourceSets.main.java.srcDirs 'src/main/gen'
+buildSearchableOptions.enabled = false
 test {
     useJUnitPlatform()
 }
+

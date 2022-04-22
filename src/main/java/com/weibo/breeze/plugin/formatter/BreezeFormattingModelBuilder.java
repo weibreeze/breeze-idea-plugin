@@ -1,6 +1,7 @@
 package com.weibo.breeze.plugin.formatter;
 
 import com.intellij.formatting.*;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
 import com.intellij.psi.tree.TokenSet;
@@ -39,18 +40,18 @@ public class BreezeFormattingModelBuilder implements FormattingModelBuilder {
   private final TokenSet names = TokenSet.create(NAME, PARAM_NAME);
   private final TokenSet lineCommentTokens = TokenSet.orSet(afterLineElements, aroundLineElements); // can end with line comment
 
-  @Override
-  public @NotNull FormattingModel createModel(@NotNull FormattingContext formattingContext) {
-    final CodeStyleSettings codeStyleSettings = formattingContext.getCodeStyleSettings();
-    return FormattingModelProvider.createFormattingModelForPsiFile(
-            formattingContext.getContainingFile(),
-            new BreezeBlock(
-                    formattingContext.getNode(),
-                    Wrap.createWrap(WrapType.NONE, false),
-                    Alignment.createAlignment(true),
-                    createCommonSpaceBuilder(formattingContext.getCodeStyleSettings())),
-            codeStyleSettings);
-  }
+//  @Override
+//  public @NotNull FormattingModel createModel(@NotNull FormattingContext formattingContext) {
+//    final CodeStyleSettings codeStyleSettings = formattingContext.getCodeStyleSettings();
+//    return FormattingModelProvider.createFormattingModelForPsiFile(
+//            formattingContext.getContainingFile(),
+//            new BreezeBlock(
+//                    formattingContext.getNode(),
+//                    Wrap.createWrap(WrapType.NONE, false),
+//                    Alignment.createAlignment(true),
+//                    createCommonSpaceBuilder(formattingContext.getCodeStyleSettings())),
+//            codeStyleSettings);
+//  }
 
   private SpacingBuilder createCommonSpaceBuilder(CodeStyleSettings settings) {
     CommonCodeStyleSettings commonCodeStyleSettings = settings.getCommonSettings(INSTANCE);
@@ -74,5 +75,17 @@ public class BreezeFormattingModelBuilder implements FormattingModelBuilder {
             .blankLines(-1)
             .around(aroundUnLineElements)
             .blankLines(-1);
+  }
+
+  @Override
+  public @NotNull FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {
+    return FormattingModelProvider.createFormattingModelForPsiFile(
+            element.getContainingFile(),
+            new BreezeBlock(
+                    element.getNode(),
+                    Wrap.createWrap(WrapType.NONE, false),
+                    Alignment.createAlignment(true),
+                    createCommonSpaceBuilder(settings)),
+            settings);
   }
 }

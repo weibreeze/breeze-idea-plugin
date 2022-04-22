@@ -43,6 +43,7 @@ public class BreezeCompletionContributor extends CompletionContributor {
     private static final Map<String, String> MOTAN_CONFIG_PROTOCOL_KEY_MAP = new HashMap<>();
     private static final Map<String, String> MOTAN_SERVICE_BASIC_CONFIG_KEY_MAP = new HashMap<>();
     private static final Map<String, String[]> MOTAN_CONFIG_KEY_VALUES = new HashMap<>();
+    private static final Map<String, String[]> MOTAN_OPTION_VALUES = new HashMap<>();
 
     static {
         // default config name
@@ -124,6 +125,10 @@ public class BreezeCompletionContributor extends CompletionContributor {
         MOTAN_CONFIG_KEY_VALUES.put("accessLog", new String[]{"true", "false"});
         MOTAN_CONFIG_KEY_VALUES.put("throwException", new String[]{"true", "false"});
         MOTAN_CONFIG_KEY_VALUES.put("shareChannel", new String[]{"true", "false"});
+
+        // option values
+        MOTAN_OPTION_VALUES.put("with_motan_config", new String[]{"true", "false"});
+        MOTAN_OPTION_VALUES.put("motan_config_type", new String[]{"xml", "yaml"});
     }
 
 
@@ -139,7 +144,7 @@ public class BreezeCompletionContributor extends CompletionContributor {
         extend( // motan config name
                 CompletionType.BASIC,
                 PlatformPatterns.psiElement(NAME),
-                new CompletionProvider<>() {
+                new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(
                             @NotNull CompletionParameters parameters,
@@ -157,7 +162,7 @@ public class BreezeCompletionContributor extends CompletionContributor {
         extend( // motan config key
                 CompletionType.BASIC,
                 PlatformPatterns.psiElement(KEY),
-                new CompletionProvider<>() {
+                new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(
                             @NotNull CompletionParameters parameters,
@@ -200,7 +205,7 @@ public class BreezeCompletionContributor extends CompletionContributor {
         extend(
                 CompletionType.BASIC,
                 PlatformPatterns.psiElement(UNKNOWN_WORD),
-                new CompletionProvider<>() {
+                new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(
                             @NotNull CompletionParameters parameters,
@@ -217,7 +222,7 @@ public class BreezeCompletionContributor extends CompletionContributor {
         extend(
                 CompletionType.BASIC,
                 PlatformPatterns.psiElement(KEY),
-                new CompletionProvider<>() {
+                new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(
                             @NotNull CompletionParameters parameters,
@@ -236,7 +241,7 @@ public class BreezeCompletionContributor extends CompletionContributor {
         extend(
                 CompletionType.BASIC,
                 PlatformPatterns.psiElement(VALUE),
-                new CompletionProvider<>() {
+                new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(
                             @NotNull CompletionParameters parameters,
@@ -246,9 +251,11 @@ public class BreezeCompletionContributor extends CompletionContributor {
                         if (prevVisibleLeaf != null && "=".equals(prevVisibleLeaf.getText())) {
                             prevVisibleLeaf = PsiTreeUtil.prevVisibleLeaf(prevVisibleLeaf);
                             if (prevVisibleLeaf != null) {
+                                // config name
                                 if (MATCH_CONFIG_VALUE_KEYS.contains(prevVisibleLeaf.getText())) {
                                     addTypeNames(parameters, result, "", CONFIG, CONFIG_KEYWORD);
                                 }
+                                // config value
                                 for (Map.Entry<String, String[]> entry : MOTAN_CONFIG_KEY_VALUES.entrySet()) {
                                     if (prevVisibleLeaf.getText().endsWith(entry.getKey())) {
                                         for (String text : entry.getValue()) {
@@ -256,8 +263,17 @@ public class BreezeCompletionContributor extends CompletionContributor {
                                         }
                                     }
                                 }
+                                // address from setting
                                 if ("address".equals(prevVisibleLeaf.getText()) && StringUtils.isNotBlank(BreezeSettingState.getInstance().defaultRegistryHost)) {
                                     result.addElement(LookupElementBuilder.create(BreezeSettingState.getInstance().defaultRegistryHost.trim()));
+                                }
+                                // option value
+                                for (Map.Entry<String, String[]> entry : MOTAN_OPTION_VALUES.entrySet()) {
+                                    if (entry.getKey().equals(prevVisibleLeaf.getText())) {
+                                        for (String text : entry.getValue()) {
+                                            result.addElement(LookupElementBuilder.create(text));
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -269,7 +285,7 @@ public class BreezeCompletionContributor extends CompletionContributor {
         extend(
                 CompletionType.BASIC,
                 PlatformPatterns.psiElement(TYPE),
-                new CompletionProvider<>() {
+                new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(
                             @NotNull CompletionParameters parameters,
@@ -287,7 +303,7 @@ public class BreezeCompletionContributor extends CompletionContributor {
         extend(
                 CompletionType.BASIC,
                 PlatformPatterns.psiElement(KEY),
-                new CompletionProvider<>() {
+                new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(
                             @NotNull CompletionParameters parameters,

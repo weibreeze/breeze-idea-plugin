@@ -1,7 +1,6 @@
 package com.weibo.breeze.plugin.setting;
 
 import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.util.NlsContexts;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +15,7 @@ public class BreezeSettingConfigurable implements Configurable {
 
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
-    public @NlsContexts.ConfigurableName String getDisplayName() {
+    public String getDisplayName() {
         return "Breeze Setting";
     }
 

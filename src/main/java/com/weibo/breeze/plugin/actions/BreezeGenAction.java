@@ -97,6 +97,7 @@ public class BreezeGenAction extends AnAction {
                     .build();
             Response response = client.newCall(request).execute();
             String res = response.body().string();
+            response.close();
             JSONObject resJson = (JSONObject) JSONValue.parse(res);
             boolean result = (boolean) resJson.getOrDefault("result", false);
             if (!result) {

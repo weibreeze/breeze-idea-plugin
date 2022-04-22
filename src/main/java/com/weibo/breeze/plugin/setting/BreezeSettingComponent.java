@@ -62,10 +62,10 @@ public class BreezeSettingComponent {
     }
 
     public String getTargetLanguage() {
-        return targetLanguage.getItem().toString();
+        return targetLanguage.getModel().getSelectedItem().toString();
     }
 
     public void setTargetLanguage(@NotNull String newText) {
-        targetLanguage.setItem(newText);
+        targetLanguage.getModel().setSelectedItem(newText);
     }
 }
