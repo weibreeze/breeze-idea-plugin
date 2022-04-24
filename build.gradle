@@ -36,7 +36,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-      Init version<br>
+      This is a init version<br>
       """
 }
 sourceSets.main.java.srcDirs 'src/main/gen'
