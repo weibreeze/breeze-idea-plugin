@@ -20,7 +20,7 @@ BreezeHelper 主要支持下列特性：
 
 ## 插件使用方式
 ### 1. 安装插件
-  
+
     1. 从JetBrains Marketplace 中下载。 
     
     （待提供）
@@ -29,14 +29,20 @@ BreezeHelper 主要支持下列特性：
     
     从Release的Assets中下载对应版本的zip压缩包，直接拖拽到IDE的编辑区即可。
 
-插件安装后，以`.breeze`为扩展名的文件回显示`B`文件图标，在*.breeze文件或者包含breeze文件的目录上右键，可以看到Breeze菜单。（TODO补充图片）
+插件安装后，以`.breeze`为扩展名的文件回显示`B`文件图标，在*.breeze文件或者包含breeze文件的目录上右键，可以看到Breeze菜单。
+
+![](./images/breezehelper-menu.jpg)
 
 ### 2. 使用插件
 
 #### 配置插件
-BreezeHelper 插件的代码生成能力来自[breeze-generator](https://github.com/weibreeze/breeze-generator),需要由breeze-generator提供http服务用来生成不同语言代码及配置。
 
-因此使用BreezeHelper的生成功能前，需要先设置breeze-generator的http服务地址及生成语言相关设置。可以在`Preferences -> Tools -> Breeze Setting`进行配置，也可以使用右键菜单中的`Breeze -> Config`进行配置。 配置页面如下图（TODO 补充图）
+BreezeHelper
+插件的代码生成能力来自[breeze-generator](https://github.com/weibreeze/breeze-generator),需要由breeze-generator提供http服务用来生成不同语言代码及配置。
+
+因此使用BreezeHelper的生成功能前，需要先设置breeze-generator的http服务地址及生成语言相关设置。可以在`Preferences -> Tools -> Breeze Setting`
+进行配置，也可以使用右键菜单中的`Breeze -> Config`进行配置。 配置页面如下图
+![](./images/breezehelper-setting.jpg)
 
 配置项说明：
 - generate server URL： 生成服务的http地址
