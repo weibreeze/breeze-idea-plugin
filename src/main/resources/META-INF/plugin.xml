@@ -10,10 +10,7 @@
       it can generate Motan config file also<br>
     ]]></description>
 
-    <change-notes>
-    </change-notes>
-
-    <idea-version since-build="145.0"/>
+    <idea-version since-build="212"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Breeze File" implementationClass="com.weibo.breeze.plugin.language.BreezeFileType"

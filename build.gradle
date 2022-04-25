@@ -33,6 +33,8 @@ dependencies {
 
 intellij {
     version = '2021.2.1'
+    // not patch version info. use idea-version in plugin.xml
+    intellij.updateSinceUntilBuild = false
 }
 patchPluginXml {
     changeNotes = """
