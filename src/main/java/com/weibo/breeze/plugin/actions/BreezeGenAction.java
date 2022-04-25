@@ -151,7 +151,6 @@ public class BreezeGenAction extends AnAction {
             Messages.showInfoMessage("error: " + exception.getMessage(), "Generate Fail");
             return;
         }
-        Messages.showMessageDialog("Generate file finish~", "Generate Finish", Messages.getInformationIcon());
     }
 
     protected static void putFileContent(VirtualFile virtualFile, JSONObject filesContent) throws IOException {
