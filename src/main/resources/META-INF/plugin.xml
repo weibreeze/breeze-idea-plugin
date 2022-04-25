@@ -11,6 +11,7 @@
     ]]></description>
 
     <idea-version since-build="212"/>
+    <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Breeze File" implementationClass="com.weibo.breeze.plugin.language.BreezeFileType"

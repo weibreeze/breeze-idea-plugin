@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ApplicationNamesInfo;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
@@ -138,13 +139,15 @@ public class BreezeGenAction extends AnAction {
             // write config file
             Object configFiles = resJson.get("config_content"); // maybe not exist
             if (configFiles != null && !((JSONObject) configFiles).isEmpty()) {
-                ((JSONObject) configFiles).forEach((k, v) -> {
-                    try {
-                        VirtualFile file = getOrCreateFile(project, baseConfigPath, k);
-                        file.setBinaryContent(((String) v).getBytes(StandardCharsets.UTF_8));
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                ApplicationManager.getApplication().runWriteAction(() -> {
+                    ((JSONObject) configFiles).forEach((k, v) -> {
+                        try {
+                            VirtualFile file = getOrCreateFile(project, baseConfigPath, k);
+                            file.setBinaryContent(((String) v).getBytes(StandardCharsets.UTF_8));
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    });
                 });
             }
         } catch (Exception exception) {
@@ -171,14 +174,19 @@ public class BreezeGenAction extends AnAction {
         String targetClass = BreezeSettingState.getInstance().targetLanguage;
         if (StringUtils.isBlank(targetClass)
                 || "auto".equals(targetClass)) { // 根据项目语言来自动设置target language
-            targetClass = "java";
-            // TODO 根据project的sdk类型区分不同IDE，支持golang等其他语言的IDE
-//        String sdkType = ProjectRootManager.getInstance(project).getProjectSdkTypeName();
-//        if (StringUtils.isNotBlank(sdkType)) {
-//            if (sdkType.contains("Java")) { // java project
-//                targetClass = "java";
-//            }
-//        }
+            String product = ApplicationNamesInfo.getInstance().getFullProductName();
+            if (StringUtils.isNotBlank(product)) {
+                if (product.contains("IDEA")) {
+                    return "java";
+                } else if (product.contains("GoLand")) {
+                    return "go";
+                } else if (product.contains("PhpStorm")) {
+                    return "php";
+                } else if (product.contains("PyCharm")) {
+                    return "python";
+                }
+            }
+            targetClass = "java";// default java
         }
         return targetClass;
     }
