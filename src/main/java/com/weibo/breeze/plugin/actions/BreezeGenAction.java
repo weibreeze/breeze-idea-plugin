@@ -184,6 +184,8 @@ public class BreezeGenAction extends AnAction {
                     return "php";
                 } else if (product.contains("PyCharm")) {
                     return "python";
+                } else if (product.contains("CLion")) {
+                    return "cpp";
                 }
             }
             targetClass = "java";// default java
