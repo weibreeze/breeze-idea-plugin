@@ -1,16 +1,16 @@
 <idea-plugin>
     <id>com.weibo.open.plugin.breeze</id>
     <name>BreezeHelper</name>
-    <version>1.0.0</version>
+    <version>1.0.0-20X-compatible</version>
     <vendor email="zzll0603@126.com" url="https://github.com/rayzhang0603">Ray</vendor>
 
     <description><![CDATA[
-      BreezeHelper plugin is a plugin for create Breeze(https://github.com/weibreeze/breeze) schema<br>
-      this plugin can generate bean classes and Motan RPC service classes automatically with multi-language such as java, go, php etc. based schema file.<br>
-      it can generate Motan config file also<br>
+      BreezeHelper is a plugin for create Breeze(https://github.com/weibreeze/breeze) schema<br>
+      This plugin can generate bean classes and Motan RPC service classes automatically with multi-language such as java, go, php etc. based schema files.<br>
+      It can generate Motan config files in XML or YAML type<br>
     ]]></description>
 
-    <idea-version since-build="201" until-build="213.*"/>
+    <idea-version since-build="201" until-build="202.*"/>
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -12,12 +12,6 @@ service DemoService(config=MyMotanConfig, unk=xxxt){
 	atest();
 }
 
-message User(alias=u){
-	int32 uid = 1;
-	string name = 2;
-	Sex sex = 3;
-}
-
 enum Sex{
     M = 1;
     F = 2;
@@ -29,4 +23,8 @@ config TestConfig{
     KKK = 123;
 }
 
-
+message User(alias = u){
+	int32 uid = 1;
+	string name = 2;
+	Sex sex = 3;
+}
