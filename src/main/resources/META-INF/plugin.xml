@@ -5,7 +5,7 @@
     <vendor email="zzll0603@126.com" url="https://github.com/rayzhang0603">Ray</vendor>
 
     <description><![CDATA[
-      BreezeHelper is a plugin for create Breeze(https://github.com/weibreeze/breeze) schema<br>
+      BreezeHelper is a plugin for create <a href="https://github.com/weibreeze/breeze">Breeze</a> schema<br>
       This plugin can generate bean classes and Motan RPC service classes automatically with multi-language such as java, go, php etc. based schema files.<br>
       It can generate Motan config files in XML or YAML type<br>
     ]]></description>
