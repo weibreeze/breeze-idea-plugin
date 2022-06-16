@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.weibo'
-version '1.0.0-20X-compatible'
+version '1.0.1-20X-compatible-SNAPSHOT'
 
 repositories {
 //    mavenCentral()

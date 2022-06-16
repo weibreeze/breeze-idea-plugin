@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.weibo.open.plugin.breeze</id>
     <name>BreezeHelper</name>
-    <version>1.0.0-20X-compatible</version>
+    <version>1.0.1-20X-compatible-SNAPSHOT</version>
     <vendor email="zzll0603@126.com" url="https://github.com/rayzhang0603">Ray</vendor>
 
     <description><![CDATA[
