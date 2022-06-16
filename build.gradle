@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.weibo'
-version '1.0.0-SNAPSHOT'
+version '1.0.0'
 
 repositories {
 //    mavenCentral()
@@ -27,6 +27,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.14.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
@@ -38,7 +39,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-      This is a init version<br>
+      init version<br>
       """
 }
 sourceSets.main.java.srcDirs 'src/main/gen'

@@ -10,7 +10,7 @@
       It can generate Motan config files in XML or YAML type<br>
     ]]></description>
 
-    <idea-version since-build="212"/>
+    <idea-version since-build="211"/>
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">

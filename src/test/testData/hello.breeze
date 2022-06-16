@@ -1,32 +1,32 @@
 option java_package = com.weibo.motan.breeze.demo;
 option with_package_dir = true;
-option motan_config_dir = ./; // motan配置文件的生成位置。默认生成在当前目录下。
-option with_motan_config = true; // 每次生成代码时同时更新motan配置 默认true，如果不希望更新motan配置可以设置为false。
-option motan_config_type = xml; //xml、yamls 或者annotation
+option motan_config_dir = ./;
+option with_motan_config = true;
+option motan_config_type = xml;
 
 package demo;
 
-service DemoService(config=MyMotanConfig, unk=xxxt){
+service DemoService(config = MyMotanConfig, unk = xxxt){
 	hello(User user, string words)string;
 	getByName(string name)User;
 	atest();
 }
 
-message User(alias=u){
+message User(alias = u){
 	int32 uid = 1;
 	string name = 2;
 	Sex sex = 3;
 }
 
 enum Sex{
-    M = 1;
-    F = 2;
-    U = 3;
+	M = 1;
+	F = 2;
+	U = 3;
 }
 
 config TestConfig{
-    xxx = jjj;
-    KKK = 123;
+	xxx = jjj;
+	KKK = 123;
 }
 
 
