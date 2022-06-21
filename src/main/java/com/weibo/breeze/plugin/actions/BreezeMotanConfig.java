@@ -4,7 +4,10 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
@@ -14,9 +17,6 @@ import com.weibo.breeze.plugin.setting.BreezeSettingState;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -26,9 +26,9 @@ import java.util.List;
  * @date 2022/3/22.
  */
 public class BreezeMotanConfig extends AnAction {
-    private static final byte[] templateBytesPart1 = ("\n\nconfig MotanBasicConfig{\n    // common config\n").getBytes(StandardCharsets.UTF_8);
-    private static final byte[] templateBytesPart2 = ("    default.registry.address = ${replacedMe};\n").getBytes(StandardCharsets.UTF_8);
-    private static final byte[] templateBytesPart3 = ("    default.protocol.name = motan2; //which rpc protocol will be used\n" +
+    private static final String templateBytesPart1 = ("\nconfig MotanBasicConfig{\n    // common config\n");
+    private static final String templateBytesPart2 = ("    default.registry.address = ${replacedMe};\n");
+    private static final String templateBytesPart3 = ("    default.protocol.name = motan2; //which rpc protocol will be used\n" +
             "    default.protocol.serialization = breeze;\n" +
             "\n" +
             "    // server config\n" +
@@ -43,7 +43,7 @@ public class BreezeMotanConfig extends AnAction {
             "    referer.group = ${replacedMe}; //rpc group of server end\n" +
             "    referer.application = ${replacedMe}; //rpc application of server end\n" +
             "    referer.requestTimeout = 1000; //rpc request time out\n" +
-            "}").getBytes(StandardCharsets.UTF_8);
+            "}\n");
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -57,23 +57,21 @@ public class BreezeMotanConfig extends AnAction {
             }
         }
 
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            VirtualFile file = e.getData(PlatformDataKeys.VIRTUAL_FILE);
-            if (file != null) {
-                try {
-                    byte[] contents = file.contentsToByteArray();
-                    byte[] part2 = templateBytesPart2;
-                    if (StringUtils.isNotBlank(BreezeSettingState.getInstance().defaultRegistryHost)) {
-                        part2 = ("    default.registry.address = " + BreezeSettingState.getInstance().defaultRegistryHost.trim() + ";\n").getBytes(StandardCharsets.UTF_8);
-                    }
-                    ByteBuffer buffer = ByteBuffer.allocate(contents.length + templateBytesPart1.length + part2.length + templateBytesPart3.length);
-                    buffer.put(contents).put(templateBytesPart1).put(part2).put(templateBytesPart3);
-                    file.setBinaryContent(buffer.array());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+        FileEditorManager manager = FileEditorManager.getInstance(e.getProject());
+        final Editor editor = manager.getSelectedTextEditor();
+        if (editor != null) {
+            final int cursorOffset = editor.getCaretModel().getOffset();
+            final Document document = editor.getDocument();
+            WriteCommandAction.writeCommandAction(e.getProject()).run(() -> {
+                String part2 = templateBytesPart2;
+                if (StringUtils.isNotBlank(BreezeSettingState.getInstance().defaultRegistryHost)) {
+                    part2 = ("    default.registry.address = " + BreezeSettingState.getInstance().defaultRegistryHost.trim() + ";\n");
                 }
-            }
-        });
+                StringBuilder sb = new StringBuilder(templateBytesPart1.length() + part2.length() + templateBytesPart3.length());
+                sb.append(templateBytesPart1).append(part2).append(templateBytesPart3);
+                document.insertString(cursorOffset, sb.toString());
+            });
+        }
     }
 
     public void update(AnActionEvent e) {
